@@ -4,21 +4,26 @@
   <meta charset="utf-8" />
   <title>Duelo 1v1 — Redes 2</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Phaser (CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/phaser@3.70.0/dist/phaser.js"></script>
-  <!-- Socket.IO client -->
   <script src="/socket.io/socket.io.js"></script>
   <style>
     html, body { margin:0; padding:0; background:#0e0f13; color:#f5f6f7; font-family:system-ui; }
-    #hud { position:fixed; top:8px; left:8px; background:rgba(0,0,0,.35); padding:8px 10px; border-radius:10px; }
-    .tag { padding:2px 8px; margin-right:6px; border-radius:99px; background:#1f2330; display:inline-block; }
+    /* Estilo del HUD reducido para solo mostrar Ping y Estado de Conexión */
+    #hud { 
+        position:fixed; 
+        top:8px; 
+        right:8px; /* Mover a la derecha */
+        background:rgba(0,0,0,.35); 
+        padding:8px 10px; 
+        border-radius:10px; 
+        z-index: 100; /* Asegurar que esté sobre el canvas */
+    }
+    .tag { padding:2px 8px; margin-left:6px; border-radius:99px; background:#1f2330; display:inline-block; }
   </style>
 </head>
 <body>
   <div id="hud">
     <span class="tag" id="tagPing">Ping: — ms</span>
-    <span class="tag" id="tagScore">Score: 0 - 0</span>
-    <span class="tag" id="tagTime">Tiempo: —</span>
     <span class="tag" id="tagInfo">Conectando…</span>
   </div>
   <script src="game.js"></script>

@@ -69,26 +69,33 @@ function resetMatch() {
       };
     });
     gameState.running = true;
+    // Notificar a ambos jugadores que el juego ha comenzado
+    io.emit('gameStarted');
   }
 }
+
 
 io.on('connection', (socket) => {
   const id = socket.id;
   console.log('[SERVER] CLIENT CONNECTED', id);
   sockets[id] = socket;
 
+  // Añadir el jugador al mapa
   players[id] = {
-    id, x: Math.random()*ARENA_W, y: Math.random()*ARENA_H, angle:0,
-    vx:0,vy:0,hp:100,score:0,
-    input:{ up:false,down:false,left:false,right:false,shoot:false,mx:0,my:0 },
-    lastSeq:0,lastShotAt:0
+    id, x: Math.random() * ARENA_W, y: Math.random() * ARENA_H, angle: 0,
+    vx: 0, vy: 0, hp: 100, score: 0,
+    input: { up: false, down: false, left: false, right: false, shoot: false, mx: 0, my: 0 },
+    lastSeq: 0, lastShotAt: 0
   };
 
   ensureBots();
-  if (Object.keys(players).length === 2) resetMatch();
+  // Iniciar el juego si ya hay 2 jugadores conectados
+  if (Object.keys(players).length === 2) {
+    resetMatch();
+  }
 
+  // Manejar el evento de inputs
   socket.on('input', (data) => {
-    // aceptar solo inputs válidos
     const p = players[id];
     if (!p) return;
     if (data && data.inputs) {
@@ -107,6 +114,8 @@ io.on('connection', (socket) => {
     gameState.running = false;
   });
 });
+
+
 
 function clamp(v,min,max){ return Math.max(min,Math.min(max,v)); }
 
